@@ -7,6 +7,7 @@ export interface IStockRepository{
     SetNew(id: number, amount: number): Promise<Stock>
     FindById(id: number): Promise<Stock>
     Delete(id: number): Promise<void>
+    Deactive(id: number): Promise<void>
 }
 
 export class StockRepository implements IStockRepository{
@@ -54,6 +55,17 @@ export class StockRepository implements IStockRepository{
 
     async Delete(id: number): Promise<void> {
         await prisma.stock.delete({
+            where: {
+                id: id
+            }
+        })
+    }
+
+    async Deactive(id: number): Promise<void>{
+        await prisma.stock.update({
+            data: {
+                active: false
+            },
             where: {
                 id: id
             }

@@ -8,6 +8,7 @@ export interface IProductRepository{
   ListAll(): Promise<Product[]>
   Update({id, name, price, description}: ProductSchemaWithId): Promise<Product>
   Delete(id: number): Promise<void>
+  Deactive(id: number): Promise<void>
 }
 
 export class ProductRepository implements IProductRepository{
@@ -85,7 +86,16 @@ export class ProductRepository implements IProductRepository{
         id: id
       }
     })
+  }
 
-    
+  async Deactive(id: number): Promise<void>{
+    await prisma.product.update({
+      data: {
+        active: false
+      },
+      where: {
+        id: id
+      }
+    })
   }
 }

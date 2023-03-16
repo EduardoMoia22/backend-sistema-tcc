@@ -5,5 +5,5 @@ import { makeDeleteSale } from "../Sale/DeleteSaleFactory";
 export const makeSetNewStock = (): SetNewStockService => {
     const stockRepository = new StockRepository()
 
-    return new SetNewStockService(stockRepository, makeDeleteSale())
+    return new SetNewStockService(stockRepository)
 }

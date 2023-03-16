@@ -17,11 +17,17 @@ export class AuthUserService{
     async execute({ email, password }: AuthUserRequest){
         const user = await this.userRepository.FindByEmail(email)
 
+        if(!user){
+            throw new Error("Usuário/Senha inválidos")
+        }
+
         const passwordMatch = await compare(password, user.password)
 
         if(!passwordMatch){
             throw new Error("Usuário/Senha inválidos")
         }
+
+        
 
         const token = sign(
             {

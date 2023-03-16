@@ -26,6 +26,7 @@ import { ListAllAccountsController } from "./controllers/AccountsReceivable/LIst
 import { ListAllPaymentsMethodsController } from "./controllers/PaymentMethods/ListAllPaymentsMethodsController";
 import { DetailUserController } from "./controllers/User/DetailUserController";
 import { ListAllUsersController } from "./controllers/User/ListAllUsersController";
+import xmlparser from "express-xml-bodyparser";
 
 const router = Router();
 
@@ -60,6 +61,13 @@ router.get("/formas-pagamento", isAuthenticated, new ListAllPaymentsMethodsContr
 router.post("/contas-receber/adicionar", isAuthenticated, new AddAccountController().handle)
 router.get("/contas-receber", isAuthenticated, new ListAllAccountsController().handle)
 router.put("/contas-receber/fechar-venda", isAuthenticated, new CloseAccountController().handle)
+
+// ========= ROTAS DE TESTE DO XML ==================
+router.post('/receive-xml', xmlparser({trim: false, explicitArray: false}), function(req, res, next) {
+    const teste = req.body.nfe
+    
+    res.send(teste)
+  });
 
 // =========== ROTAS DE USUÁRIO ============
 router.post("/registrar", new CreateUserController().handle)

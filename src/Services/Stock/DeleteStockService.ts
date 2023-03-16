@@ -14,6 +14,6 @@ export class DeleteStockService{
             throw new Error("Estoque não vinculado em nenhum produto")
         }
 
-        return await this.stockRepository.Delete(id)
+        return await this.stockRepository.Deactive(id)
     }
 }

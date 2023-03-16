@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
+import xmlparser from 'express-xml-bodyparser';
 import helmet from 'helmet';
 import path from 'path'
 import { router } from './routes';

@@ -17,6 +17,7 @@ model Product {
   description String
   created_at  DateTime? @default(now())
   updated_at  DateTime? @default(now())
+  active      Boolean @default(true)
 
   stock   Stock @relation(fields: [stockID], references: [id])
   stockID Int
@@ -114,6 +115,7 @@ model Stock {
   id       Int @id @default(autoincrement())
   stockMin Int
   stock    Int
+  active   Boolean @default(true) 
 
   product Product[]
 
