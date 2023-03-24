@@ -6,7 +6,7 @@
 Clone o projeto
 
 ```bash
-  git clone https://github.com/EduardoMoia22/api-main.git
+  git clone https://github.com/EduardoMoia22/backend-sistema-tcc.git
 ```
 
 Entre no diretório do projeto
