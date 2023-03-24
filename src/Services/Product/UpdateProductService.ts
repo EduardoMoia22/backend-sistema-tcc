@@ -1,5 +1,11 @@
 import { IProductRepository } from "../../Repositories/ProductRepository"
-import { ProductSchemaWithId } from "../../Schemas/Schemas";
+
+type UpdateProductProps = {
+    id: number
+    name: string
+    price: number
+    description: string
+}
 
 export class UpdateProductService{
     private readonly productRepository: IProductRepository
@@ -8,7 +14,7 @@ export class UpdateProductService{
         this.productRepository = productRepository
     }
 
-    async execute({ id, name, price, description }: ProductSchemaWithId){
+    async execute({ id, name, price, description }: UpdateProductProps){
         return await this.productRepository.Update({ id, name, description, price })
     }
 }

@@ -2,7 +2,7 @@ import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { IUserRepository } from "../../Repositories/UserRepository";
 
-type AuthUserRequest = {
+type AuthUserProps = {
     email: string
     password: string
 }
@@ -14,7 +14,7 @@ export class AuthUserService{
         this.userRepository = userRepository
     }
 
-    async execute({ email, password }: AuthUserRequest){
+    async execute({ email, password }: AuthUserProps){
         const user = await this.userRepository.FindByEmail(email)
 
         if(!user){

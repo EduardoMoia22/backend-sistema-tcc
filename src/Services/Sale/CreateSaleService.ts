@@ -2,6 +2,12 @@ import { ISaleRepository } from "../../Repositories/SaleRepository";
 import { FindClientService } from "../Client/FIndClienteService";
 import { FindPaymentByIdService } from "../PaymentMethods/FindPaymentByIdService";
 
+type CreateSaleProps = {
+    paymentID: number
+    open: boolean
+    clientID?: number
+}
+
 export class CreateSaleService{
     private readonly saleRepository: ISaleRepository
     private readonly findPaymentByIdService: FindPaymentByIdService
@@ -17,7 +23,7 @@ export class CreateSaleService{
         this.findClientById = findClientById
     }
 
-    async execute(paymentID: number, open: boolean, clientID?: number){
+    async execute({paymentID, open, clientID}: CreateSaleProps){
         const paymentExists = await this.findPaymentByIdService.execute(paymentID)        
 
         await this.findClientById.execute(clientID.toString())

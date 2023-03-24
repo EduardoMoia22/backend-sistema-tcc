@@ -1,7 +1,12 @@
 import { IItemRepository } from "../../Repositories/ItemRepository";
 import { IProductRepository } from "../../Repositories/ProductRepository";
 import { IStockRepository } from "../../Repositories/StockRepository";
-import { ItemSchema } from "../../Schemas/Schemas";
+
+type AddItemToSaleProps = {
+    amount: number
+    productID: number
+    saleID: string
+}
 
 export class AddItemToSaleService{
     private readonly itemRepository: IItemRepository
@@ -17,7 +22,7 @@ export class AddItemToSaleService{
         this.productRepository = productRepository
     }
 
-    async execute({amount, productID, saleID}: ItemSchema){
+    async execute({amount, productID, saleID}: AddItemToSaleProps){
         const {id, name, stockID} = await this.productRepository.FindById(productID)
 
         const stock = await this.stockRepository.FindById(stockID)

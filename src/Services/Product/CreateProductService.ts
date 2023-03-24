@@ -1,6 +1,13 @@
 import { IProductRepository } from "../../Repositories/ProductRepository"
 import { IStockRepository } from "../../Repositories/StockRepository";
-import { ProductSchemaWithStockSchema } from "../../Schemas/Schemas";
+
+type CreateProductProps = {
+  name: string
+  price: number
+  description: string
+  stock: number
+  stockMin: number
+}
 
 export class CreateProductService{
   private readonly productRepository: IProductRepository
@@ -14,7 +21,7 @@ export class CreateProductService{
     this.stockRepository = stockRepository
   }
 
-  async execute({name, price, description, stock, stockMin}: ProductSchemaWithStockSchema){
+  async execute({name, price, description, stock, stockMin}: CreateProductProps){
     const createStock = await this.stockRepository.Create({  
       stock,
       stockMin,
