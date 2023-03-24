@@ -1,9 +1,13 @@
 import { Stock } from "../Models/StockModel";
-import { StockSchema } from "../Schemas/Schemas";
 import { prisma } from "../Utils/prisma/prisma";
 
+type StockProps = {
+    stockMin: number
+    stock: number
+}
+
 export interface IStockRepository{
-    Create({stockMin, stock}: StockSchema): Promise<Stock>
+    Create({stockMin, stock}: StockProps): Promise<Stock>
     SetNew(id: number, amount: number): Promise<Stock>
     FindById(id: number): Promise<Stock>
     Delete(id: number): Promise<void>
@@ -11,7 +15,7 @@ export interface IStockRepository{
 }
 
 export class StockRepository implements IStockRepository{
-    async Create({stockMin, stock}: StockSchema): Promise<Stock>{
+    async Create({stockMin, stock}: StockProps): Promise<Stock>{
         const createStock = await prisma.stock.create({
             data: {
                 stock,

@@ -3,6 +3,10 @@ import { IStockRepository } from "../../Repositories/StockRepository";
 
 type CreateProductProps = {
   name: string
+  bar_code: string
+  reference: string
+  manufacturerID: number
+  groupID: number
   price: number
   description: string
   stock: number
@@ -21,7 +25,7 @@ export class CreateProductService{
     this.stockRepository = stockRepository
   }
 
-  async execute({name, price, description, stock, stockMin}: CreateProductProps){
+  async execute({name, bar_code, reference, manufacturerID, groupID, price, description, stock, stockMin}: CreateProductProps){
     const createStock = await this.stockRepository.Create({  
       stock,
       stockMin,
@@ -29,6 +33,10 @@ export class CreateProductService{
 
     const product = await this.productRepository.Create({
       name, 
+      bar_code,
+      reference,
+      manufacturerID,
+      groupID,
       price,
       description,
       stockID: createStock.id

@@ -1,10 +1,14 @@
 import { Sale } from "../Models/SaleModel";
 import { prisma } from "../Utils/prisma/prisma";
-import { ClientRepository } from "./ClientRepository";
-import { PaymentMethodsRepository } from "./PaymentMethodsRepository";
+
+type SaleProps = {
+    paymentID: number
+    open: boolean
+    clientID?: number
+}
 
 export interface ISaleRepository{
-    Create(paymentID: number, open: boolean, clientID?: number): Promise<Sale>
+    Create({paymentID, open, clientID}: SaleProps): Promise<Sale>
     FindById(id: string): Promise<Sale>
     ListAll(): Promise<Sale[]>
     ListAllByPaymentMethod(paymentID: number): Promise<Sale[]>
@@ -13,7 +17,7 @@ export interface ISaleRepository{
 }
 
 export class SaleRepository implements ISaleRepository{
-    async Create(paymentID: number, open: boolean, clientID?: number): Promise<Sale>{
+    async Create({paymentID, open, clientID}: SaleProps ): Promise<Sale>{
         const sale = await prisma.sale.create({
             data: {
                 clientID,

@@ -1,5 +1,9 @@
 export type ProductSchema = {
   name: string
+  bar_code: string
+  reference: string
+  manufacturerID: number
+  groupID: number
   price: number
   description: string
   stockID: number
@@ -83,6 +87,10 @@ export type StockSchema = {
 
 export type ProductSchemaWithStockSchema = {
   name: string
+  bar_code: string
+  reference: string
+  manufacturerID: number
+  groupID: number
   price: number
   description: string
   stockMin: number

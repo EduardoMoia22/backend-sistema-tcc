@@ -2,20 +2,35 @@ import { Product } from "../Models/ProductModel"
 import { ProductSchema, ProductSchemaWithId } from "../Schemas/Schemas"
 import { prisma } from "../Utils/prisma/prisma"
 
+type ProductProps = {
+  name: string
+  bar_code: string
+  reference: string
+  manufacturerID: number
+  groupID: number
+  price: number
+  description: string
+  stockID: number
+}
+
 export interface IProductRepository{
-  Create({name, price, description, stockID}: ProductSchema): Promise<Product>
+  Create({name, bar_code, reference, manufacturerID, groupID, price, description, stockID}: ProductProps): Promise<Product>
   FindById(id: number): Promise<Product>
   ListAll(): Promise<Product[]>
-  Update({id, name, price, description}: ProductSchemaWithId): Promise<Product>
+  Update({id,name, bar_code, reference, manufacturerID, groupID, price, description, stockID}: Product): Promise<Product>
   Delete(id: number): Promise<void>
   Deactive(id: number): Promise<void>
 }
 
 export class ProductRepository implements IProductRepository{
-  async Create({name, price, description, stockID}: ProductSchema): Promise<Product>{
+  async Create({name, bar_code, reference, manufacturerID, groupID, price, description, stockID}: ProductProps): Promise<Product>{
     const product = await prisma.product.create({
       data:{
         name, 
+        bar_code,
+        reference,
+        manufacturerID,
+        groupID,
         price,
         description,
         stockID
@@ -57,7 +72,7 @@ export class ProductRepository implements IProductRepository{
     })
   }
 
-  async Update({id, name, price, description}: ProductSchemaWithId): Promise<Product>{
+  async Update({id, name, bar_code, reference, manufacturerID, groupID, price, description, stockID}: Product): Promise<Product>{
     const productExists = await this.FindById(id)
 
     if (!productExists){

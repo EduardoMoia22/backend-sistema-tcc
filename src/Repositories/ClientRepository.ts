@@ -1,24 +1,31 @@
 import { Client } from "../Models/ClientModel"
-import { CLienteSchemaWithId, ClientSchema, ClientSchemaWithFormatedCPF } from "../Schemas/Schemas"
 import { prisma } from "../Utils/prisma/prisma"
-import { ProductRepository } from "./ProductRepository"
+
+type ClientProps = {
+  name: string
+  fantasy: string
+  formatedCPF: string
+  cnpj: string
+  fundation: string
+  birthday: string
+}
 
 export interface IClientRepository{
   Create({
     name, fantasy, formatedCPF, cnpj, fundation, birthday
-  }: ClientSchemaWithFormatedCPF): Promise<Client>
+  }: ClientProps): Promise<Client>
   FindById(id: number): Promise<Client>
   ListAll(): Promise<Client[]>
   Update({
     id, name, fantasy, cpf, cnpj, fundation, birthday
-  }: CLienteSchemaWithId): Promise<Client>
+  }: Client): Promise<Client>
   Delete(id: number): Promise<void>
 }
 
 export class ClientRepository implements IClientRepository{
   async Create({
     name, fantasy, formatedCPF, cnpj, fundation, birthday
-  }: ClientSchemaWithFormatedCPF): Promise<Client>{
+  }: ClientProps): Promise<Client>{
     const client = await prisma.client.create({
       data:{
         name, 
@@ -51,7 +58,7 @@ export class ClientRepository implements IClientRepository{
     return await prisma.client.findMany()
   }
 
-  async Update({id, name, fantasy, cpf, cnpj, fundation, birthday}: CLienteSchemaWithId): Promise<Client>{
+  async Update({id, name, fantasy, cpf, cnpj, fundation, birthday}: Client): Promise<Client>{
     const client = this.FindById(id)
 
     if(!client){

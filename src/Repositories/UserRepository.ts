@@ -1,18 +1,23 @@
-import { User } from "../Models/UserModel";
-import { UserResponseSchema, UserSchema, UserSchemaWithHashPassword, UserSchemaWithId } from "../Schemas/Schemas";
+import { User, UserResponse } from "../Models/UserModel";
 import { prisma } from "../Utils/prisma/prisma";
 
+type UserProps = {
+    name: string
+    email: string
+    hashPassword: string
+}
+
 export interface IUserRepository{
-    Create({ name, email, hashPassword }: UserSchemaWithHashPassword): Promise<UserResponseSchema>
-    FindByEmail(email: string): Promise<UserSchemaWithId>
-    FindById(id: string): Promise<UserResponseSchema>
-    ListAll(): Promise<UserResponseSchema[]>
+    Create({ name, email, hashPassword }: UserProps): Promise<UserResponse>
+    FindByEmail(email: string): Promise<User>
+    FindById(id: string): Promise<UserResponse>
+    ListAll(): Promise<UserResponse[]>
     Delete(id: string): Promise<void>
-    Update({ id, name, email, password }: UserSchemaWithId): Promise<UserResponseSchema>
+    Update({ id, name, email, password }: User): Promise<UserResponse>
 }
 
 export class UserRepository implements IUserRepository{
-    async Create({ name, email, hashPassword }: UserSchemaWithHashPassword): Promise<UserResponseSchema>{
+    async Create({ name, email, hashPassword }: UserProps): Promise<UserResponse>{
         const userExists = await this.FindByEmail(email)
 
         if(userExists){
@@ -35,7 +40,7 @@ export class UserRepository implements IUserRepository{
         return user
     }
 
-    async FindByEmail(email: string): Promise<UserSchemaWithId>{
+    async FindByEmail(email: string): Promise<User>{
         const user = await prisma.user.findFirst({
             where: {
                 email: email
@@ -45,7 +50,7 @@ export class UserRepository implements IUserRepository{
         return user
     }
 
-    async FindById(id: string): Promise<UserResponseSchema>{
+    async FindById(id: string): Promise<UserResponse>{
         const user = await prisma.user.findFirst({
             where: {
                 id: id
@@ -64,7 +69,7 @@ export class UserRepository implements IUserRepository{
         return user
     }
 
-    async ListAll(): Promise<UserResponseSchema[]>{
+    async ListAll(): Promise<UserResponse[]>{
         const users = await prisma.user.findMany({
             select: {
                 id: true,
@@ -91,7 +96,7 @@ export class UserRepository implements IUserRepository{
         })
     }
 
-    async Update({ id, name, email, password }: UserSchemaWithId): Promise<UserResponseSchema>{
+    async Update({ id, name, email, password }: User): Promise<UserResponse>{
         await this.FindById(id)
 
         const user = await prisma.user.update({
