@@ -11,13 +11,19 @@ datasource db {
 }
 
 model Product {
-  id          Int       @id @default(autoincrement())
-  name        String
-  price       Float
-  description String
-  created_at  DateTime? @default(now())
-  updated_at  DateTime? @default(now())
-  active      Boolean @default(true)
+  id             Int       @id @default(autoincrement())
+  name           String
+  bar_code       String?
+  reference      String?
+  manufacturer   Manufacturer @relation(fields: [manufacturerID], references: [id])
+  manufacturerID Int
+  group          Group @relation(fields: [groupID], references: [id])
+  groupID        Int
+  price          Float
+  description    String
+  created_at     DateTime? @default(now())
+  updated_at     DateTime? @default(now())
+  active         Boolean   @default(true)
 
   stock   Stock @relation(fields: [stockID], references: [id])
   stockID Int
@@ -25,6 +31,22 @@ model Product {
   items Item[]
 
   @@map("products")
+}
+
+model Manufacturer {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  products Product[]
+
+  @@map("manufacturers")
+}
+
+model Group{
+  id Int @id @default(autoincrement())
+  name String
+
+  products Product[]
 }
 
 model Client {
@@ -112,10 +134,10 @@ model AccountsReceivable {
 }
 
 model Stock {
-  id       Int @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   stockMin Int
   stock    Int
-  active   Boolean @default(true) 
+  active   Boolean @default(true)
 
   product Product[]
 

@@ -14,7 +14,7 @@ export class CreateProductService{
     this.stockRepository = stockRepository
   }
 
-  async execute({name, price, description, stock, stockMin}: ProductSchemaWithStockSchema){
+  async execute({name, bar_code, reference, manufacturerID, groupID, price, description, stock, stockMin}: ProductSchemaWithStockSchema){
     const createStock = await this.stockRepository.Create({  
       stock,
       stockMin,
@@ -22,6 +22,10 @@ export class CreateProductService{
 
     const product = await this.productRepository.Create({
       name, 
+      bar_code,
+      reference,
+      manufacturerID,
+      groupID,
       price,
       description,
       stockID: createStock.id

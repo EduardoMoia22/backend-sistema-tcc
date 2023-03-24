@@ -3,7 +3,7 @@ import { ProductSchema, ProductSchemaWithId } from "../Schemas/Schemas"
 import { prisma } from "../Utils/prisma/prisma"
 
 export interface IProductRepository{
-  Create({name, price, description, stockID}: ProductSchema): Promise<Product>
+  Create({name, bar_code, reference, manufacturerID, groupID, price, description, stockID}: ProductSchema): Promise<Product>
   FindById(id: number): Promise<Product>
   ListAll(): Promise<Product[]>
   Update({id, name, price, description}: ProductSchemaWithId): Promise<Product>
@@ -12,10 +12,14 @@ export interface IProductRepository{
 }
 
 export class ProductRepository implements IProductRepository{
-  async Create({name, price, description, stockID}: ProductSchema): Promise<Product>{
+  async Create({name, bar_code, reference, manufacturerID, groupID, price, description, stockID}: ProductSchema): Promise<Product>{
     const product = await prisma.product.create({
       data:{
         name, 
+        bar_code,
+        reference,
+        manufacturerID,
+        groupID,
         price,
         description,
         stockID
