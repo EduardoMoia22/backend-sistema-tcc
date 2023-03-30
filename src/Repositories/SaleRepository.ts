@@ -39,10 +39,6 @@ export class SaleRepository implements ISaleRepository{
             }
         })
 
-        if(!sale){
-            throw new Error("Venda não existente!")
-        }
-
         return sale
     }
     
@@ -57,20 +53,16 @@ export class SaleRepository implements ISaleRepository{
     }
 
     async ListAllByPaymentMethod(paymentID: number): Promise<Sale[]>{
-        const sales = await prisma.sale.findMany({
-            where: {
-                paymentID
-            },
-            include: {
-                client: true
-            }
-        })
-        
-        if(sales.length === 0){
-            throw new Error("Não existe vendas com essa forma de pagamento!")
-        }
+      const sales = await prisma.sale.findMany({
+        where: {
+          paymentID,
+        },
+        include: {
+          client: true,
+        },
+      });
 
-        return sales
+      return sales;
     }
 
     async Close(id: string): Promise<void>{

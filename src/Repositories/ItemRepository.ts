@@ -15,42 +15,38 @@ export interface IItemRepository{
     Delete(id: string): Promise<void>
 }
 
-export class ItemRepository implements IItemRepository{
-    async Add({ amount, productID, saleID }: ItemProps): Promise<Item>{
-        const item = await prisma.item.create({
-            data:{
-                productID,
-                saleID,
-                amount
-            }
-        })
+export class ItemRepository implements IItemRepository {
+  async Add({ amount, productID, saleID }: ItemProps): Promise<Item> {
+    const item = await prisma.item.create({
+      data: {
+        productID,
+        saleID,
+        amount,
+      },
+    });
 
-        return item
-    }
+    return item;
+  }
 
-    async ListAllFromSaleID(id: string): Promise<Item[]>{
-        const saleRepository = new SaleRepository()
+  async ListAllFromSaleID(id: string): Promise<Item[]> {
+    const items = await prisma.item.findMany({
+      where: {
+        saleID: id,
+      },
+      include: {
+        product: true,
+        sale: true,
+      },
+    });
 
-        await saleRepository.FindById(id)
+    return items;
+  }
 
-        const items = await prisma.item.findMany({
-            where:{
-                saleID: id
-            },
-            include:{
-                product: true,
-                sale: true
-            }
-        })
-
-        return items
-    }
-
-    async Delete(id: string): Promise<void>{
-        await prisma.item.delete({
-            where: {
-                id: id
-            }
-        })
-    }
+  async Delete(id: string): Promise<void> {
+    await prisma.item.delete({
+      where: {
+        id: id,
+      },
+    });
+  }
 }

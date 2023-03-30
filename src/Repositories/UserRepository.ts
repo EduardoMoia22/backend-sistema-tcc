@@ -16,105 +16,97 @@ export interface IUserRepository{
     Update({ id, name, email, password }: User): Promise<UserResponse>
 }
 
-export class UserRepository implements IUserRepository{
-    async Create({ name, email, hashPassword }: UserProps): Promise<UserResponse>{
-        const userExists = await this.FindByEmail(email)
+export class UserRepository implements IUserRepository {
+  async Create({
+    name,
+    email,
+    hashPassword,
+  }: UserProps): Promise<UserResponse> {
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashPassword,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
 
-        if(userExists){
-            throw new Error("Usuário já cadastrado")
-        }
+    return user;
+  }
 
-        const user = await prisma.user.create({
-            data:{
-                name, 
-                email, 
-                password: hashPassword
-            },
-            select: {
-                id: true,
-                name: true,
-                email: true
-            }
-        })
+  async FindByEmail(email: string): Promise<User> {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
 
-        return user
-    }
+    return user;
+  }
 
-    async FindByEmail(email: string): Promise<User>{
-        const user = await prisma.user.findFirst({
-            where: {
-                email: email
-            },
-        })
+  async FindById(id: string): Promise<UserResponse> {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
 
-        return user
-    }
+    return user;
+  }
 
-    async FindById(id: string): Promise<UserResponse>{
-        const user = await prisma.user.findFirst({
-            where: {
-                id: id
-            },
-            select: {
-                id: true,
-                name: true,
-                email: true
-            }
-        })
+  async ListAll(): Promise<UserResponse[]> {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
 
-        if(!user){
-            throw new Error("Usuário não cadastrado")
-        }
+    return users;
+  }
 
-        return user
-    }
+  async Delete(id: string): Promise<void> {
+    await prisma.user.delete({
+      where: {
+        id: id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+  }
 
-    async ListAll(): Promise<UserResponse[]>{
-        const users = await prisma.user.findMany({
-            select: {
-                id: true,
-                name: true,
-                email: true
-            }
-        })
+  async Update({ id, name, email, password }: User): Promise<UserResponse> {
+    await this.FindById(id);
 
-        return users
-    }
+    const user = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name,
+        email,
+        password,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
 
-    async Delete(id: string): Promise<void>{
-        await this.FindById(id)
-
-        await prisma.user.delete({
-            where: {
-                id: id
-            }, 
-            select : {
-                id: true,
-                name: true,
-                email: true
-            }
-        })
-    }
-
-    async Update({ id, name, email, password }: User): Promise<UserResponse>{
-        await this.FindById(id)
-
-        const user = await prisma.user.update({
-            where: {
-                id: id
-            },
-            data: {
-                name,
-                email,
-                password
-            },
-            select: {
-                id: true,
-                name: true, 
-                email: true
-            }
-        })
-
-        return user 
-    }
+    return user;
+  }
 }

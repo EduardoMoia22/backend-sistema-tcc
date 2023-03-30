@@ -46,18 +46,13 @@ export class ProductRepository implements IProductRepository{
   async FindById(id: number): Promise<Product>{
     const findProduct = await prisma.product.findFirst({
       where: {
-        id: id
+        id: id,
       },
       include: {
-        stock: true
-      }
-    })
-
-    if(!findProduct){
-      throw new Error("Produto não cadastrado.")
-    }else{
-      return findProduct
-    }
+        stock: true,
+      },
+    });
+    return findProduct;
   }
 
   async ListAll(): Promise<Product[]>{
@@ -72,13 +67,7 @@ export class ProductRepository implements IProductRepository{
     })
   }
 
-  async Update({id, name, bar_code, reference, manufacturerID, groupID, price, description, stockID}: Product): Promise<Product>{
-    const productExists = await this.FindById(id)
-
-    if (!productExists){
-      throw new Error("Produto não cadastrado!")
-    }
-    
+  async Update({id, name, bar_code, reference, manufacturerID, groupID, price, description, stockID}: Product): Promise<Product>{  
     const updateProduct = await prisma.product.update({
       where: {
         id: id,
@@ -97,9 +86,7 @@ export class ProductRepository implements IProductRepository{
     return updateProduct
   }
 
-  async Delete(id: number): Promise<void>{
-    await this.FindById(id)
-    
+  async Delete(id: number): Promise<void>{    
     await prisma.product.delete({
       where: {
         id: id

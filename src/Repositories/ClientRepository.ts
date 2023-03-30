@@ -22,52 +22,55 @@ export interface IClientRepository{
   Delete(id: number): Promise<void>
 }
 
-export class ClientRepository implements IClientRepository{
+export class ClientRepository implements IClientRepository {
   async Create({
-    name, fantasy, formatedCPF, cnpj, fundation, birthday
-  }: ClientProps): Promise<Client>{
+    name,
+    fantasy,
+    formatedCPF,
+    cnpj,
+    fundation,
+    birthday,
+  }: ClientProps): Promise<Client> {
     const client = await prisma.client.create({
-      data:{
-        name, 
-        fantasy, 
-        cnpj, 
+      data: {
+        name,
+        fantasy,
+        cnpj,
         cpf: formatedCPF,
         fundation,
-        birthday
-      }
-    })
+        birthday,
+      },
+    });
 
-    return client
+    return client;
   }
 
-  async FindById(id: number): Promise<Client>{
+  async FindById(id: number): Promise<Client> {
     const client = await prisma.client.findFirst({
       where: {
-        id: id
-      }
-    })
+        id: id,
+      },
+    });
 
-    if(!client){
-      throw new Error("Cliente não cadastrado")
-    } else {
-      return client
-    }
-  } 
-
-  async ListAll(): Promise<Client[]>{
-    return await prisma.client.findMany()
+    return client;
   }
 
-  async Update({id, name, fantasy, cpf, cnpj, fundation, birthday}: Client): Promise<Client>{
-    const client = this.FindById(id)
+  async ListAll(): Promise<Client[]> {
+    return await prisma.client.findMany();
+  }
 
-    if(!client){
-      throw new Error("Cliente não cadastrado")
-    } 
-
+  async Update({
+    id,
+    name,
+    fantasy,
+    cpf,
+    cnpj,
+    fundation,
+    birthday,
+  }: Client): Promise<Client> {
     const updateClient = await prisma.client.update({
-      where:{
-        id: id
+      where: {
+        id: id,
       },
       data: {
         name,
@@ -75,20 +78,18 @@ export class ClientRepository implements IClientRepository{
         cpf,
         cnpj,
         fundation,
-        birthday
-      }
-    })
+        birthday,
+      },
+    });
 
-    return updateClient
+    return updateClient;
   }
 
-  async Delete(id: number): Promise<void>{
-    await this.FindById(id)
-
+  async Delete(id: number): Promise<void> {
     await prisma.client.delete({
       where: {
-        id: id
-      }
-    })
+        id: id,
+      },
+    });
   }
 }
