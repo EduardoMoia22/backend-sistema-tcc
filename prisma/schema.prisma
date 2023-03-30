@@ -16,9 +16,9 @@ model Product {
   bar_code       String?
   reference      String?
   manufacturer   Manufacturer? @relation(fields: [manufacturerID], references: [id])
-  manufacturerID Int
+  manufacturerID Int?
   group          Group? @relation(fields: [groupID], references: [id])
-  groupID        Int
+  groupID        Int?
   price          Float
   description    String
   created_at     DateTime? @default(now())
