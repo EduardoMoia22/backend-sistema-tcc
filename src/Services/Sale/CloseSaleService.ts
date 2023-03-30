@@ -65,10 +65,10 @@ export class CloseSaleService{
         for(let i = 0; i < items.length; i++){
             const { productID, amount } = items[i]
             let product = await this.productRepository.FindById(productID)
-            let { stockID } = product
+            let id = product.id
             let { stock, stockMin } = await this.stockRepository.FindById(product.stockID)
             let newStock = stock - amount
-            await setNewStockService.execute(stockID, newStock, stockMin)
+            await setNewStockService.execute({id, newStock, stockMin})
         }
     }
 }

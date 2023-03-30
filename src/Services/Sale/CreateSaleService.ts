@@ -32,7 +32,7 @@ export class CreateSaleService{
             throw new Error("A forma de pagamento não existe.")
         }
 
-        const sale = await this.saleRepository.Create(paymentID, open, clientID)
+        const sale = await this.saleRepository.Create({paymentID, open, clientID})
 
         return sale
     }
