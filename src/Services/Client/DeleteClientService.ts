@@ -8,6 +8,12 @@ export class DeleteClientService{
     }
 
     async execute(id: string){
-        return await this.clientRepository.Delete(parseInt(id))
+        const client = await this.clientRepository.FindById(parseInt(id))
+
+        if(!client){
+            throw new Error("Cliente não cadastrado")
+        }
+
+        return await this.clientRepository.Delete(client.id)
     }
 }

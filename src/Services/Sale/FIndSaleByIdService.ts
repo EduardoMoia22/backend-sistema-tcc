@@ -8,6 +8,12 @@ export class FindSaleByIdService{
     }
 
     async execute(id: string){
-        return await this.saleRepository.FindById(id)
+        const sale = await this.saleRepository.FindById(id)
+        
+        if(!sale){
+            throw new Error("Venda não existe")
+        }
+
+        return sale
     }
 }

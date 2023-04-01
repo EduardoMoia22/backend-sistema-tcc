@@ -13,7 +13,7 @@ export class AddNewPaymentMethodService{
   }
 
   async execute({name, accounts_receivable}: AddNewPaymentMethodProps){
-    const paymentMethod = await this.paymentMethodsRepository.AddNew(name, accounts_receivable)
+    const paymentMethod = await this.paymentMethodsRepository.AddNew({name, accounts_receivable})
 
     return paymentMethod
   }

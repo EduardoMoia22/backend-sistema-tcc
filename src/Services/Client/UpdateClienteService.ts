@@ -19,7 +19,13 @@ export class UpdateClientService{
     }
     
     async execute({id, name, fantasy, birthday, fundation, cpf, cnpj}: UpdateClientProps){
-        const client = await this.clientRepository.Update({
+        const client = await this.clientRepository.FindById(id)
+
+        if(!client){
+            throw new Error("Cliente não cadastrado")
+        }
+
+        return await this.clientRepository.Update({
             id,
             name,
             fantasy,
@@ -28,7 +34,5 @@ export class UpdateClientService{
             cnpj,
             cpf
         })
-
-        return client
     }
 }

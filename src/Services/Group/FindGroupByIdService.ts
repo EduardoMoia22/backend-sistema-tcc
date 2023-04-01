@@ -9,6 +9,12 @@ export class FindGroupByIdService {
   }
 
   async execute(id: number): Promise<Group>{
-    return await this.groupRepository.FindById(id)
+    const group = await this.groupRepository.FindById(id)
+    
+    if(!group){
+      throw new Error("Grupo não cadastrado")
+    }
+
+    return group
   }
 }

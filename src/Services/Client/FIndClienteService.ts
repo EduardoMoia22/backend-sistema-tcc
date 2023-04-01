@@ -7,8 +7,8 @@ export class FindClientService{
         this.clientRepository = clientRepository
     }
 
-    async execute(id: string){
-        const client = await this.clientRepository.FindById(parseInt(id))
+    async execute(id: number){
+        const client = await this.clientRepository.FindById(id)
 
         if(!client){
             throw new Error("Cliente não cadastrado.")

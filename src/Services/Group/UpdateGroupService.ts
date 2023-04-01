@@ -9,6 +9,12 @@ export class UpdateGroupService {
   }
 
   async execute({id, name}: Group): Promise<Group>{
+    const group = await this.groupRepository.FindById(id)
+
+    if(!group){
+      throw new Error("Grupo não cadastrado")
+    }
+
     return await this.groupRepository.Update({id, name})
   }
 }

@@ -1,6 +1,6 @@
 import { IStockRepository } from "../../Repositories/StockRepository";
 
-export class DeleteStockService{
+export class DeactiveStockService{
     private readonly stockRepository: IStockRepository
 
     constructor(stockRepository: IStockRepository) {

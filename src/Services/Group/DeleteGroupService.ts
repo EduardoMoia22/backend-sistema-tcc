@@ -1,4 +1,3 @@
-import { prisma } from ".prisma/client";
 import { IGroupRepository } from "../../Repositories/GroupRepository";
 
 export class DeleteGroupService {
@@ -9,6 +8,12 @@ export class DeleteGroupService {
   }
 
   async execute(id: number): Promise<void>{
+    const group = await this.groupRepository.FindById(id)
+
+    if(!group){
+      throw new Error("Grupo não cadastrado")
+    }
+
     return await this.groupRepository.Delete(id)
   }
 }

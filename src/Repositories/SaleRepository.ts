@@ -20,9 +20,9 @@ export class SaleRepository implements ISaleRepository{
     async Create({paymentID, open, clientID}: SaleProps ): Promise<Sale>{
         const sale = await prisma.sale.create({
             data: {
-                clientID,
-                paymentID,
-                open
+                clientID: clientID,
+                paymentID: paymentID,
+                open: open
             }
         })
 

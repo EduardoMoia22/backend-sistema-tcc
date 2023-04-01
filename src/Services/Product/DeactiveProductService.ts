@@ -1,13 +1,13 @@
 import { IProductRepository } from "../../Repositories/ProductRepository"
-import { DeleteStockService } from "../Stock/DeleteStockService"
+import { DeactiveStockService } from "../Stock/DeactiveStockService"
 
-export class DeleteProductService{
+export class DeactiveProductService{
     private readonly productRepository: IProductRepository
-    private readonly deleteStockService: DeleteStockService
+    private readonly deactiveStockService: DeactiveStockService
 
-    constructor(productRepository: IProductRepository, deleteStockService: DeleteStockService){
+    constructor(productRepository: IProductRepository, deactiveStockService: DeactiveStockService){
         this.productRepository = productRepository
-        this.deleteStockService = deleteStockService
+        this.deactiveStockService = deactiveStockService
     }
 
     async execute(id: string){
@@ -17,7 +17,7 @@ export class DeleteProductService{
             throw new Error("Produto não cadastrado.")
         }
         await this.productRepository.Deactive(parseInt(id))
-        await this.deleteStockService.execute(product.stockID)
+        await this.deactiveStockService.execute(product.stockID)
         return "Produto desativado com sucesso."
     }
 

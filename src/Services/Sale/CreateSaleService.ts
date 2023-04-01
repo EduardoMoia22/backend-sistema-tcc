@@ -26,12 +26,13 @@ export class CreateSaleService{
     async execute({paymentID, open, clientID}: CreateSaleProps){
         const paymentExists = await this.findPaymentByIdService.execute(paymentID)        
 
-        await this.findClientById.execute(clientID.toString())
+        await this.findClientById.execute(clientID)
 
         if (!paymentExists){
             throw new Error("A forma de pagamento não existe.")
         }
 
+        console.log('aa')
         const sale = await this.saleRepository.Create({paymentID, open, clientID})
 
         return sale

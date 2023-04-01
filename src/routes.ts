@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { CreateProductController } from "./controllers/Product/CreateProductController";
 import { FindProductByIdController } from "./controllers/Product/FindProductByIdController";
 import { ListAllProductsController } from "./controllers/Product/ListAllProductsController";

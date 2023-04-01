@@ -25,18 +25,20 @@ export class AddItemToSaleService{
     async execute({amount, productID, saleID}: AddItemToSaleProps){
         const {id, name, stockID} = await this.productRepository.FindById(productID)
 
+        if(!id){
+            throw new Error("Produto não cadastrado")
+        }
+
         const stock = await this.stockRepository.FindById(stockID)
 
-        if(amount < stock.stockMin){
+        if((stock.stock - amount) < stock.stockMin){
             throw new Error(`A quantidade que está sendo vendida ultrapassa o valor minímo do produto em estoque. ID: ${id} - NOME: ${name}`)
         }
-        
-        const addItemToSale = await this.itemRepository.Add({
+
+        return await this.itemRepository.Add({
             amount,
             productID,
             saleID
         })
-
-        return addItemToSale
     }
 }
