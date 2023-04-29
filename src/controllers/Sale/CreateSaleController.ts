@@ -6,6 +6,6 @@ export class CreateSaleController{
     async handle(req: Request, res: Response){
         const { clientID, paymentID, open } = await req.body
 
-        return res.json(await makeCreateSale().execute(parseInt(paymentID), open, parseInt(clientID)))
+        return res.json(await makeCreateSale().execute({paymentID, open, clientID}))
     }
 }

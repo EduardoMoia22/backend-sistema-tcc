@@ -8,8 +8,12 @@ export class FindProductByIdService{
     }
 
     async execute(id: string){
-        const findProduct = await this.productRepository.FindById(parseInt(id))
+        const product = await this.productRepository.FindById(parseInt(id))
 
-        return findProduct
+        if(!product){
+            throw new Error("Produto não cadastrado")
+        }
+
+        return product
     }
 }

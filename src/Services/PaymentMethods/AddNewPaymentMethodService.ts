@@ -1,5 +1,10 @@
 import { IPaymentMethodsRepository } from "../../Repositories/PaymentMethodsRepository";
 
+type AddNewPaymentMethodProps = {
+  name: string
+  accounts_receivable: boolean
+}
+
 export class AddNewPaymentMethodService{
   private readonly paymentMethodsRepository: IPaymentMethodsRepository
 
@@ -7,8 +12,8 @@ export class AddNewPaymentMethodService{
     this.paymentMethodsRepository = paymentMethodsRepository
   }
 
-  async execute(name: string, accounts_receivable: boolean){
-    const paymentMethod = await this.paymentMethodsRepository.AddNew(name, accounts_receivable)
+  async execute({name, accounts_receivable}: AddNewPaymentMethodProps){
+    const paymentMethod = await this.paymentMethodsRepository.AddNew({name, accounts_receivable})
 
     return paymentMethod
   }

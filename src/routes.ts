@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { CreateProductController } from "./controllers/Product/CreateProductController";
 import { FindProductByIdController } from "./controllers/Product/FindProductByIdController";
 import { ListAllProductsController } from "./controllers/Product/ListAllProductsController";
@@ -27,40 +27,145 @@ import { ListAllPaymentsMethodsController } from "./controllers/PaymentMethods/L
 import { DetailUserController } from "./controllers/User/DetailUserController";
 import { ListAllUsersController } from "./controllers/User/ListAllUsersController";
 import xmlparser from "express-xml-bodyparser";
+import { CreateGroupController } from "./controllers/Group/CreateGroupController";
+import { ListAllGroupsController } from "./controllers/Group/ListAllGroupsController";
+import { FindGroupByIdController } from "./controllers/Group/FindGroupByIdController";
+import { UpdateGroupController } from "./controllers/Group/UpdateGroupController";
+import { DeleteGroupController } from "./controllers/Group/DeleteGroupController";
+import { CreateManufacturerController } from "./controllers/Manufacturer/CreateManufacturerController";
+import { FindManufacturerByIdController } from "./controllers/Manufacturer/FindManufacturerByIdController";
+import { ListAllManufacturerController } from "./controllers/Manufacturer/ListAllManufacturersController";
+import { DeleteManufacturerController } from "./controllers/Manufacturer/DeleteManufacturerController";
+import { UpdateManufacturerController } from "./controllers/Manufacturer/UpdateManufacturerController";
 
 const router = Router();
 
 // ========= ROTAS DE PRODUTOS =============
-router.post('/produto/cadastrar', isAuthenticated, new CreateProductController().handle)
-router.get('/produto/:id', isAuthenticated, new FindProductByIdController().handle)
-router.get('/produtos', isAuthenticated, new ListAllProductsController().handle)
-router.delete('/produto/:id', isAuthenticated, new DeleteProductController().handle)
-router.put('/produto/alterar', isAuthenticated, new UpdateProductController().handle)
+router.post(
+  "/produto/cadastrar",
+  isAuthenticated,
+  new CreateProductController().handle
+);
+router.get(
+  "/produto/:id",
+  isAuthenticated,
+  new FindProductByIdController().handle
+);
+router.get(
+  "/produtos",
+  isAuthenticated,
+  new ListAllProductsController().handle
+);
+router.delete(
+  "/produto/:id",
+  isAuthenticated,
+  new DeleteProductController().handle
+);
+router.put(
+  "/produto/alterar",
+  isAuthenticated,
+  new UpdateProductController().handle
+);
 
 // ========= ROTAS DE CLIENTES =============
-router.post("/cliente/cadastrar", isAuthenticated, new CreateClientController().handle)
-router.get("/cliente/:id", isAuthenticated, new FindClientController().handle)
-router.get("/clientes/", isAuthenticated, new ListAllClientsController().handle)
-router.delete("/cliente/:id", isAuthenticated, new DeleteClientController().handle)
-router.put("/cliente/alterar", isAuthenticated, new UpdateClientController().handle)
+router.post(
+  "/cliente/cadastrar",
+  isAuthenticated,
+  new CreateClientController().handle
+);
+router.get("/cliente/:id", isAuthenticated, new FindClientController().handle);
+router.get(
+  "/clientes/",
+  isAuthenticated,
+  new ListAllClientsController().handle
+);
+router.delete(
+  "/cliente/:id",
+  isAuthenticated,
+  new DeleteClientController().handle
+);
+router.put(
+  "/cliente/alterar",
+  isAuthenticated,
+  new UpdateClientController().handle
+);
 
 // =========== ROTAS DE VENDA ==============
-router.post("/venda/abrir", isAuthenticated, new CreateSaleController().handle)
-router.post("/venda/item/adicionar", isAuthenticated, new AddItemToSaleController().handle)
-router.get("/venda", isAuthenticated, new FindSaleByIdController().handle)
-router.get("/vendas", isAuthenticated, new ListAllSalesController().handle)
-router.get("/venda/itens", isAuthenticated, new ListItemsFromSaleByIdController().handle)
-router.get("/vendas/forma-pagamento", isAuthenticated, new listAllByPaymentMethodController().handle)
-router.put("/venda/fechar", isAuthenticated, new CloseSaleController().handle)
+router.post("/venda/abrir", isAuthenticated, new CreateSaleController().handle);
+router.post(
+  "/venda/item/adicionar",
+  isAuthenticated,
+  new AddItemToSaleController().handle
+);
+router.get("/venda", isAuthenticated, new FindSaleByIdController().handle);
+router.get("/vendas", isAuthenticated, new ListAllSalesController().handle);
+router.get(
+  "/venda/itens",
+  isAuthenticated,
+  new ListItemsFromSaleByIdController().handle
+);
+router.get(
+  "/vendas/forma-pagamento",
+  isAuthenticated,
+  new listAllByPaymentMethodController().handle
+);
+router.put("/venda/fechar", isAuthenticated, new CloseSaleController().handle);
 
 // ========== ROTAS DE FORMAS DE PAGAMENTO ===========
-router.post("/formas-pagamento/cadastrar", isAuthenticated, new AddNewPaymentMethodController().handle)
-router.get("/formas-pagamento", isAuthenticated, new ListAllPaymentsMethodsController().handle)
+router.post(
+  "/formas-pagamento/cadastrar",
+  isAuthenticated,
+  new AddNewPaymentMethodController().handle
+);
+router.get(
+  "/formas-pagamento",
+  isAuthenticated,
+  new ListAllPaymentsMethodsController().handle
+);
 
 // ========== ROTAS DE CONTAS A RECEBER ==============
-router.post("/contas-receber/adicionar", isAuthenticated, new AddAccountController().handle)
-router.get("/contas-receber", isAuthenticated, new ListAllAccountsController().handle)
-router.put("/contas-receber/fechar-venda", isAuthenticated, new CloseAccountController().handle)
+router.post(
+  "/contas-receber/adicionar",
+  isAuthenticated,
+  new AddAccountController().handle
+);
+router.get(
+  "/contas-receber",
+  isAuthenticated,
+  new ListAllAccountsController().handle
+);
+router.put(
+  "/contas-receber/fechar-venda",
+  isAuthenticated,
+  new CloseAccountController().handle
+);
+
+// ========== ROTAS DE GRUPOS =======================
+router.post(
+  "/grupo/cadastrar",
+  isAuthenticated,
+  new CreateGroupController().handle
+);
+
+router.get("/grupos", isAuthenticated, new ListAllGroupsController().handle);
+router.get("/grupo/:id", isAuthenticated, new FindGroupByIdController().handle);
+router.put(
+  "/grupo/alterar",
+  isAuthenticated,
+  new UpdateGroupController().handle
+);
+router.delete(
+  "/grupo/:id",
+  isAuthenticated,
+  new DeleteGroupController().handle
+);
+
+// ========= ROTAS DE FABRICANTES ===================
+router.post("/fabricante/cadastrar", isAuthenticated, new CreateManufacturerController().Handle);
+router.get("/fabricante/:id", isAuthenticated, new FindManufacturerByIdController().Handle);
+router.get("/fabricantes", isAuthenticated, new ListAllManufacturerController().Handle);
+router.delete("/fabricante/:id", isAuthenticated, new DeleteManufacturerController().Handle);
+router.put("/fabricante/alterar", isAuthenticated, new UpdateManufacturerController().Handle);
 
 // ========= ROTAS DE TESTE DO XML ==================
 router.post('/receive-xml', xmlparser({trim: false, explicitArray: false}), function(req, res, next) {

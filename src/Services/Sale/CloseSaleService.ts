@@ -29,9 +29,13 @@ export class CloseSaleService{
     }
 
     async execute(id: string){
-        const { open } = await this.saleRepository.FindById(id)
+        const sale = await this.saleRepository.FindById(id)
 
-        await CheckIfSaleIsOpen(open)
+        if(!sale){
+            throw new Error("A venda não existe")
+        }
+
+        await CheckIfSaleIsOpen(sale.open)
 
         // const entersInAccountsReceivable = await this.CheckIfItEntersTheAccountsReceivable({id, paymentID }) 
         
@@ -65,10 +69,15 @@ export class CloseSaleService{
         for(let i = 0; i < items.length; i++){
             const { productID, amount } = items[i]
             let product = await this.productRepository.FindById(productID)
-            let { stockID } = product
+            
+            if (!product){
+                throw new Error("Produto não cadastrado")
+            }
+
+            let id = product.id
             let { stock, stockMin } = await this.stockRepository.FindById(product.stockID)
             let newStock = stock - amount
-            await setNewStockService.execute(stockID, newStock, stockMin)
+            await setNewStockService.execute({id, newStock, stockMin})
         }
     }
 }

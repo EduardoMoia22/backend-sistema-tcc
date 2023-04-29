@@ -8,6 +8,12 @@ export class DetailUserService{
     }
 
     async execute(id: string){
+        const userExists = await this.userRepository.FindById(id)
+        
+        if(!userExists){
+            throw new Error("Usuário não cadastrado")
+        }
+
         return await this.userRepository.FindById(id) 
     }
 }

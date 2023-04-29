@@ -1,6 +1,14 @@
 import { IClientRepository } from "../../Repositories/ClientRepository";
-import { ClientSchema } from "../../Schemas/Schemas";
 import { CPFValidation } from "../../Utils/Validations";
+
+type CreateClientProps = {
+    name: string
+    fantasy: string
+    cpf: string
+    cnpj: string
+    birthday: string
+    fundation: string
+}
 
 export class CreateClientService{
     private readonly clientRepository: IClientRepository
@@ -9,7 +17,7 @@ export class CreateClientService{
         this.clientRepository = clientRepository
     }
 
-    async execute({name, fantasy, cpf, cnpj, birthday, fundation}: ClientSchema){
+    async execute({name, fantasy, cpf, cnpj, birthday, fundation}: CreateClientProps){
         let formatedCPF = CPFValidation(cpf)
 
         const client = await this.clientRepository.Create({

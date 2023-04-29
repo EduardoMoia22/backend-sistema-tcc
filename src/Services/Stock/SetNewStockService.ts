@@ -1,5 +1,11 @@
 import { StockRepository } from "../../Repositories/StockRepository"
 
+type SetNewStockProps = {
+  id: number
+  newStock: number
+  stockMin: number
+}
+
 export class SetNewStockService{
   private readonly stockRepository: StockRepository 
 
@@ -9,9 +15,15 @@ export class SetNewStockService{
     this.stockRepository = stockRepository
   }
   
-  async execute(id: number, newStock: number, stockMin: number){
+  async execute({id, newStock, stockMin}: SetNewStockProps){
+    const stock = await this.stockRepository.FindById(id)
+    
+    if(!stock){
+      throw new Error("Estoque não vinculado a nenhum produto")
+    }
+
     if (stockMin == null){
-      const { stockMin } = await this.stockRepository.FindById(id)
+      const { stockMin } = stock
     }
 
     const changeStock = await this.stockRepository.SetNew(id, newStock)
