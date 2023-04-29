@@ -32,6 +32,11 @@ import { ListAllGroupsController } from "./controllers/Group/ListAllGroupsContro
 import { FindGroupByIdController } from "./controllers/Group/FindGroupByIdController";
 import { UpdateGroupController } from "./controllers/Group/UpdateGroupController";
 import { DeleteGroupController } from "./controllers/Group/DeleteGroupController";
+import { CreateManufacturerController } from "./controllers/Manufacturer/CreateManufacturerController";
+import { FindManufacturerByIdController } from "./controllers/Manufacturer/FindManufacturerByIdController";
+import { ListAllManufacturerController } from "./controllers/Manufacturer/ListAllManufacturersController";
+import { DeleteManufacturerController } from "./controllers/Manufacturer/DeleteManufacturerController";
+import { UpdateManufacturerController } from "./controllers/Manufacturer/UpdateManufacturerController";
 
 const router = Router();
 
@@ -154,6 +159,13 @@ router.delete(
   isAuthenticated,
   new DeleteGroupController().handle
 );
+
+// ========= ROTAS DE FABRICANTES ===================
+router.post("/fabricante/cadastrar", isAuthenticated, new CreateManufacturerController().Handle);
+router.get("/fabricante/:id", isAuthenticated, new FindManufacturerByIdController().Handle);
+router.get("/fabricantes", isAuthenticated, new ListAllManufacturerController().Handle);
+router.delete("/fabricante/:id", isAuthenticated, new DeleteManufacturerController().Handle);
+router.put("/fabricante/alterar", isAuthenticated, new UpdateManufacturerController().Handle);
 
 // ========= ROTAS DE TESTE DO XML ==================
 router.post('/receive-xml', xmlparser({trim: false, explicitArray: false}), function(req, res, next) {
