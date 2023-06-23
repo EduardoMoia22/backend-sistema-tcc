@@ -37,6 +37,7 @@ import { FindManufacturerByIdController } from "./controllers/Manufacturer/FindM
 import { ListAllManufacturerController } from "./controllers/Manufacturer/ListAllManufacturersController";
 import { DeleteManufacturerController } from "./controllers/Manufacturer/DeleteManufacturerController";
 import { UpdateManufacturerController } from "./controllers/Manufacturer/UpdateManufacturerController";
+import { testeNF } from "./controllers/NF/teste";
 
 const router = Router();
 
@@ -168,11 +169,7 @@ router.delete("/fabricante/:id", isAuthenticated, new DeleteManufacturerControll
 router.put("/fabricante/alterar", isAuthenticated, new UpdateManufacturerController().Handle);
 
 // ========= ROTAS DE TESTE DO XML ==================
-router.post('/receive-xml', xmlparser({trim: false, explicitArray: false}), function(req, res, next) {
-    const teste = req.body.nfe
-    
-    res.send(teste)
-  });
+router.post('/receive-xml', xmlparser({ trim: false, explicitArray: false }), new testeNF().handle);
 
 // =========== ROTAS DE USUÁRIO ============
 router.post("/registrar", new CreateUserController().handle)
